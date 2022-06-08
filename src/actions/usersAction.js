@@ -3,15 +3,19 @@ import { API_URL } from "../config/config"
 
 export const USER_CREATE_REQUEST = 'USER_CREATE_REQUEST'
 export const USER_CREATE_SUCCESS = 'USER_CREATE_SUCCESS'
+export const USER_CREATE_FAIL = 'USER_CREATE_FAIL'
 
 export const USER_FETCH_REQUEST = 'USER_FETCH_REQUEST'
 export const USER_FETCH_SUCCESS = 'USER_FETCH_SUCCESS'
+export const USER_FETCH_FAIL = 'USER_FETCH_FAIL'
 
 export const USER_UPDATE_REQUEST = 'USER_UPDATE_REQUEST'
 export const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS'
+export const USER_UPDATE_FAIL = 'USER_UPDATE_FAIL'
 
 export const USER_DELETE_REQUEST = 'USER_DELETE_REQUEST'
 export const USER_DELETE_SUCCESS = 'USER_DELETE_SUCCESS'
+export const USER_DELETE_FAIL = 'USER_DELETE_FAIL'
 
 export const createUser = (firstName, lastName, userName, address, contactNumber) => async (dispatch) => {
     try {
@@ -34,7 +38,10 @@ export const createUser = (firstName, lastName, userName, address, contactNumber
         alert(data.message)
     }
     catch (err) {
-        alert(err.response.message)
+        dispatch({
+            type: USER_CREATE_FAIL
+        })
+        alert(err.response.message || 'Something went wrong with request')
     }
 }
 export const fetchUsers = () => async (dispatch) => {
@@ -52,7 +59,13 @@ export const fetchUsers = () => async (dispatch) => {
         })
     }
     catch (err) {
-        alert(err.response.message)
+        dispatch({
+            type: USER_FETCH_FAIL,
+            payload: 'No data found'
+        })
+        if(err.response.message) {
+            alert(err.response.message)
+        }
     }
 }
 export const updateUser = (userName, lName) => async (dispatch) => {
@@ -71,7 +84,10 @@ export const updateUser = (userName, lName) => async (dispatch) => {
         alert(data.message)
     }
     catch (err) {
-        alert(err.response.message)
+        dispatch({
+            type: USER_UPDATE_FAIL
+        })
+        alert(err.response.message || 'Something went wrong with request')
     }
 }
 export const deleteUser = (userName) => async (dispatch) => {
@@ -90,6 +106,9 @@ export const deleteUser = (userName) => async (dispatch) => {
         alert(data.message)
     }
     catch (err) {
-        alert(err.response.message)
+        dispatch({
+            type: USER_DELETE_FAIL
+        })
+        alert(err.response.message || 'Something went wrong with request')
     }
 }

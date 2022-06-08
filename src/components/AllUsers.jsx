@@ -10,7 +10,7 @@ const AllUser = () => {
   const [lName, setLname] = useState('')
 
   const usersList = useSelector((state) => state.users);
-  const { loading, users } = usersList;
+  const { loading, users, message } = usersList;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,25 +20,28 @@ const AllUser = () => {
 
   return (
     <div className='container mt-5'>
-      <NavLink to="/create">
-        <button type='button' className='btn btn-primary'>Create User</button>
-      </NavLink>
+
+      <button type='button' className='btn btn-primary py-2 px-0' disabled={loading}>
+        <NavLink to="/create" className="text-white text-decoration-none px-3 py-3">Create User
+        </NavLink>
+      </button>
       {loading && <Loader />}
-      <ul className="list-group mt-5">
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">userId</th>
-              <th scope="col">user name</th>
-              <th scope="col">name</th>
-              <th scope="col">lname</th>
-              <th scope="col">address</th>
-              <th scope="col">contact</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-                 users && users.map(user => {
+      <div className="mt-5" style={{opacity: loading && '0.5'}}>
+        {users.length > 0 ?
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">userId</th>
+                <th scope="col">user name</th>
+                <th scope="col">name</th>
+                <th scope="col">lname</th>
+                <th scope="col">address</th>
+                <th scope="col">contact</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                users.map(user => {
                   return <tr key={user.userId}>
                     <td>{user.userId}</td>
                     <td>{user.userName}</td>
@@ -59,10 +62,12 @@ const AllUser = () => {
                     </td>
                   </tr>
                 })
-            }
-          </tbody>
-        </table>
-      </ul>
+              }
+            </tbody>
+          </table>
+          : message && <h2 className='text-secondary text-center'>{message}</h2>
+        }
+      </div>
     </div>
   )
 }
